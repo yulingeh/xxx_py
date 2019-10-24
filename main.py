@@ -13,16 +13,16 @@ read_dirpath = '/Users/hedidi/PycharmProjects/xxx/raw_pic/'
 MATCHsave_dirpath = '/Users/hedidi/PycharmProjects/xxx/result_pic/'
 
 
-#获取文件下所有图像按顺序排好的名字
+# 获取文件下所有图像按顺序排好的名字
 read_picname = []
 read_picname = get_filename(read_dirpath,'.jpg')
-#确定标准图像为第一幅
+# 确定标准图像为第一幅
 im_base = cv2.imread(read_dirpath+read_picname[0])
 
 def PIC_MATCH():
-    #将第一幅图像存到save文件夹中
+    # 将第一幅图像存到save文件夹中
     crop_flag = int(input("pic_match mode,crop or not?1/0"))
-    if(crop_flag):
+    if crop_flag:
         im_base_croped = im_base[10:470,10:630]
         cv2.imwrite(MATCHsave_dirpath+read_picname[0],im_base_croped)
     else:

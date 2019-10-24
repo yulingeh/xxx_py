@@ -84,9 +84,9 @@ def pic_match(im1, im2, save_path_name, i, crop_flag):
 
 def PIC_MATCH():
     # 原始图像存储的文件路径
-    read_dirpath = '/Users/hedidi/PycharmProjects/xxx/raw_pic/'
+    read_dirpath = 'D:/xxx/raw_pic/'
     # 对齐加裁剪图片保存路径
-    MATCHsave_dirpath = '/Users/hedidi/PycharmProjects/xxx/result_pic/'
+    MATCHsave_dirpath = 'D:/xxx/result_pic/'
 
     # 获取文件下所有图像按顺序排好的名字
     read_picname = []

@@ -2,8 +2,8 @@ import cv2
 import os
 
 
-def get_filename(path,filetype):
-    #运行时间起点记录
+def get_filename(path, filetype):
+    # 运行时间起点记录
     start = cv2.getTickCount()
     name =[]
     final_name = []
@@ -23,7 +23,7 @@ def get_filename(path,filetype):
 
 
 if __name__ == '__main__':
-    path = '/Users/hedidi/PycharmProjects/xxx/raw_pic/'# 指定文件所在路径
+    path = 'D:/xxx/raw_pic/'# 指定文件所在路径
     filetype ='.jpg' # 指定文件类型
     get_filename(path,filetype)
 
