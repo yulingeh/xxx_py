@@ -12,7 +12,7 @@ def get_detectimage(phi):
     start = cv2.getTickCount()
 
     # 获取坑道原始x，y，z信息
-    hole = h_m.hole_module('output.csv')
+    hole = h_m.hole_module('cr39.csv')
 
     end = cv2.getTickCount()  # 结束时间
     t = '%.5f' % ((end - start) / cv2.getTickFrequency())  # 时间间隔除以周期，换算成秒为单位
@@ -22,7 +22,7 @@ def get_detectimage(phi):
     start = cv2.getTickCount()
 
     # 获取"坑"洞每一点的法向量矩阵
-    normalvector_matrix = h_m.Normalvector_Cal('output.csv')
+    normalvector_matrix = h_m.Normalvector_Cal('cr39.csv')
 
     end = cv2.getTickCount()  # 结束时间
     t = '%.5f' % ((end - start) / cv2.getTickFrequency())  # 时间间隔除以周期，换算成秒为单位
@@ -41,7 +41,7 @@ def get_detectimage(phi):
 def cal_core(Normalvector_matrix, theta, phi):
     file = open("./imagelist30_5/image_list_" + str(theta) + ".txt", 'a')
     # 上方是否能探测到信息的矩阵
-    image_list = [[0 for i in range(100)] for j in range(100)]
+    image_list = [[0 for i in range(256)] for j in range(256)]
 
     # z方向单位向量
     _001 = np.array([0, 0, 1])
@@ -58,8 +58,8 @@ def cal_core(Normalvector_matrix, theta, phi):
 
     count = 0  # 用于打印进度
     match_num = 0   # 用于记录有几个符合条件的点
-    for i in range(0, 100):
-        for j in range(0, 100):
+    for i in range(0, 256):
+        for j in range(0, 256):
             # 先考虑每个点法向量投影到x y平面的新向量
             # 与light_xy的夹角
             nv_xy = np.array([Normalvector_matrix[i][j][0], Normalvector_matrix[i][j][1], 0])
@@ -82,7 +82,7 @@ def cal_core(Normalvector_matrix, theta, phi):
                     # 弧度值转角度值
                     angletheta_R_001 = math.degrees(Radiantheta_R_001)
 
-                    if angletheta_R_001 < 5:
+                    if angletheta_R_001 < 20:
                         image_list[i][j] = 255
                         match_num = match_num+1
 
@@ -90,7 +90,7 @@ def cal_core(Normalvector_matrix, theta, phi):
             file.write(str(j)+" ")
             file.write(str(image_list[i][j])+"\n")
             count = count + 1
-            print("\r角度"+str(theta)+"进度百分比：{0}%".format(round(100*count/10000, 2)), end=" ", flush=True)
+            print("\r角度"+str(theta)+"进度百分比：{0}%".format(round(100*count/65536, 2)), end=" ", flush=True)
 
     end1 = cv2.getTickCount()  # 结束时间
     t = '%.3f' % ((end1 - start1) / cv2.getTickFrequency())  # 时间间隔除以周期，换算成秒为单位
@@ -99,4 +99,4 @@ def cal_core(Normalvector_matrix, theta, phi):
 
 
 # 参数为fai角，即光线和x y平面的夹角
-get_detectimage(30)
+get_detectimage(45)

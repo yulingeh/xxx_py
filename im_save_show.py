@@ -4,7 +4,7 @@ import numpy as np
 
 def save_show(filename, j):
     file = open(filename)
-    a = [[0 for i in range(100)] for j in range(100)]
+    a = [[0 for i in range(256)] for j in range(256)]
     a = np.array(a)
     for line in file.readlines():
         curLine = line.strip().split(" ")
