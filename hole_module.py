@@ -3,7 +3,7 @@ import csv
 import pandas as pd
 from array_crossing import array_crossing
 import seaborn as sns
-
+import math
 '''
 获取"坑洞"模型原始数据
 '''
@@ -111,11 +111,12 @@ def Normalvector_Cal(filename):
                 Normalvector_Matirx[i][j][2] = (array_crossing(a, b))[2]
                 Normalvector_Matirx[i][j] = positive(Normalvector_Matirx[i][j])
     # print(Normalvector_Matirx[][])
+    angle_cal(Normalvector_Matirx)
     return Normalvector_Matirx
 
 
 def lawarray():
-    # 生产100x100矩阵，每个元素都是一个列表，用来存法向量坐标
+    # 生产256x256矩阵，每个元素都是一个列表，用来存法向量坐标
     num_list = [[[0, 0, 0] for i in range(256)] for j in range(256)]
     return num_list
 
@@ -131,18 +132,23 @@ def positive(X):
         return X
 
 
-'''
-把坑洞用热力图的形式画出来
+# 获取面最大和最小的角度
+def angle_cal(Z):
+    max = 0
+    min = 0
+    _001 = np.array([0, 0, 1], dtype=float)
+    for i in range(256):
+        for j in range(256):
+            length = (Z[i][j][0]**2 + Z[i][j][1]**2 + Z[i][j][2])**0.5
+            cos = Z[i][j][2]/ length
+            R = math.acos(cos)
+            # 弧度值转角度值
+            theta = math.degrees(R)
+            if theta > max:
+                max = theta
+            if theta < min:
+                min = theta
+    print("max: ", max)
+    print("min: ", min)
 
-
-
-def show_hole():
-    Y = hole_module("output.csv")
-    for i in range(100):
-        for j in range(100):
-            Y[i][j] = int(Y[i][j] + 100)
-    sns.heatmap(Y, annot=True)
-
-# Normalvector_Cal('output.csv')
-# show_hole()
-'''
+Normalvector_Cal('cr39_20.csv')
