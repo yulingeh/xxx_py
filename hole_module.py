@@ -9,11 +9,10 @@ import math
 '''
 
 
-def hole_module(filename):
+def read_data(filename):
     df = pd.read_csv(filename)  # 返回一个DataFrame的对象，这个是pandas的一个数据结构
     df.values
     Y = np.array(df, dtype=np.float)  # X矩阵，i，j代表位置，[i][j]值代表深度
-    # 矩阵大小100 * 100
     return Y
 
 
@@ -23,7 +22,7 @@ def hole_module(filename):
 
 
 def Normalvector_Cal(filename):
-    X = hole_module(filename)
+    X = read_data(filename)
     Normalvector_Matirx = lawarray()
 
     # 要用两个向量叉乘来算每一点的法向量
@@ -111,7 +110,6 @@ def Normalvector_Cal(filename):
                 Normalvector_Matirx[i][j][2] = (array_crossing(a, b))[2]
                 Normalvector_Matirx[i][j] = positive(Normalvector_Matirx[i][j])
     # print(Normalvector_Matirx[][])
-    angle_cal(Normalvector_Matirx)
     return Normalvector_Matirx
 
 
@@ -131,6 +129,8 @@ def positive(X):
     else:
         return X
 
+'''
+最好使用surface_angle.py 来解决
 
 # 获取面最大和最小的角度
 def angle_cal(Z):
@@ -150,5 +150,5 @@ def angle_cal(Z):
                 min = theta
     print("max: ", max)
     print("min: ", min)
-
-Normalvector_Cal('cr39_20.csv')
+'''
+#Normalvector_Cal('cr39_20.csv')
