@@ -4,7 +4,7 @@ import numpy as np
 
 def save_show(filename, j):
     file = open(filename)
-    a = [[0 for i in range(256)] for j in range(256)]
+    a = [[0 for i in range(img_size)] for j in range(img_size)]
     a = np.array(a)
     for line in file.readlines():
         curLine = line.strip().split(" ")
@@ -29,6 +29,7 @@ def save_show(filename, j):
     plt.show()
 
 
+img_size = 256
 j = 0
 while j < 360:
     save_show("./imagelist30_5/image_list_" + str(j) + ".txt", j)

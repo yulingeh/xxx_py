@@ -21,23 +21,25 @@ def read_data(filename):
 '''
 
 
-def Normalvector_Cal(filename):
+def Normalvector_Cal(filename, size):
     X = read_data(filename)
-    Normalvector_Matirx = lawarray()
+    Normalvector_Matirx = lawarray(size)
+
+    size_1 = size - 1  # size减一用于后面判断是否达到了图像边界
 
     # 要用两个向量叉乘来算每一点的法向量
     # 关注点附近取的两个点都是上 右这样的简单关系
     # 两点组成的向量（x，y，z）的x，y值都只是差1，
     # （a1，b1,c1)代表第一个参考向量，x方向
     # （a2,b2,c2)代表第二个参考向量，y方向
-    for i in range(256):
+    for i in range(size):
         a1 = 1  # 对应绝大多数情况，关注点和右边一点的x差值，见下方算c1
         b1 = 0  # 对应绝大多数情况，关注点和右边一点的y差值，见下方算c1
         a2 = 0
         b2 = 1
         # 统一用x方向叉乘y方向
-        for j in range(256):
-            if i < 255 and j < 255:  # 绝大多数点
+        for j in range(size):
+            if i < size_1 and j < size_1:  # 绝大多数点
                 c1 = X[i][j + 1] - X[i][j]  # 右边的点构成的向量，算向量z值
                 c2 = X[i + 1][j] - X[i][j]  # 下方的点构成的向量，算向量z值
                 # 法向量坐标由a3,b3,c3表示  全部取反得到向"上"的向量
@@ -55,7 +57,7 @@ def Normalvector_Cal(filename):
                 # 不这样赋值，最后矩阵中每一项输出都带一个array，实际上只需要一个[]
                 Normalvector_Matirx[i][j] = positive(Normalvector_Matirx[i][j])  # 检查是否是向上的向量，否则取反
 
-            elif 255 == j and i < 255:
+            elif size_1 == j and i < size_1:
                 # 最右方那一列
                 c1 = X[i][j - 1] - X[i][j]
                 c2 = X[i + 1][j] - X[i][j]
@@ -74,7 +76,7 @@ def Normalvector_Cal(filename):
                 Normalvector_Matirx[i][j][2] = (array_crossing(a, b))[2]
                 Normalvector_Matirx[i][j] = positive(Normalvector_Matirx[i][j])
 
-            elif 255 == i and j < 255:
+            elif size_1 == i and j < size_1:
                 # 最下方那一行
                 c1 = X[i][j + 1] - X[i][j]
                 c2 = X[i - 1][j] - X[i][j]  # 最下方那一行
@@ -92,7 +94,7 @@ def Normalvector_Cal(filename):
                 Normalvector_Matirx[i][j][2] = (array_crossing(a, b))[2]
                 Normalvector_Matirx[i][j] = positive(Normalvector_Matirx[i][j])
 
-            elif 255 == i and 255 == j:
+            elif size_1 == i and size_1 == j:
                 c1 = X[i - 1][j] - X[i][j]
                 c2 = X[i][j - 1] - X[i][j]  # 最右下角那一个格子
                 '''
@@ -113,9 +115,9 @@ def Normalvector_Cal(filename):
     return Normalvector_Matirx
 
 
-def lawarray():
-    # 生产256x256矩阵，每个元素都是一个列表，用来存法向量坐标
-    num_list = [[[0, 0, 0] for i in range(256)] for j in range(256)]
+def lawarray(size):
+    # 生产sizexsize矩阵，每个元素都是一个列表，用来存法向量坐标
+    num_list = [[[0, 0, 0] for i in range(size)] for j in range(size)]
     return num_list
 
 
